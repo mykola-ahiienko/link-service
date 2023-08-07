@@ -1,0 +1,32 @@
+<?php
+
+use App\Enums\Settings;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('links', function (Blueprint $table) {
+            $table->id();
+            $table->string('source_url');
+            $table->string('token', Settings::TOKEN_LENGTH->value)->unique();
+            $table->unsignedInteger('clicks')->default(Settings::DEFAULT_CLICKS->value);
+            $table->unsignedInteger('max_clicks')->default(Settings::DEFAULT_CLICKS->value);
+            $table->timestamp('expires_at')->nullable();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('links');
+    }
+};
