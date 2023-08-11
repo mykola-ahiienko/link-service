@@ -17,9 +17,19 @@ class LinkController extends Controller
     /**
      * @return View
      */
+    public function index(): View
+    {
+        $links = Link::all();
+
+        return view('index', compact('links'));
+    }
+
+    /**
+     * @return View
+     */
     public function create(): View
     {
-        return view('create_link');
+        return view('create');
     }
 
     /**
@@ -45,7 +55,7 @@ class LinkController extends Controller
 
         $link->save();
 
-        return redirect()->route('link.show', ['token' => $token]);
+        return redirect()->route('link.index');
     }
 
     /**
@@ -63,6 +73,48 @@ class LinkController extends Controller
         }
 
         return redirect($link->source_url);
+    }
+
+    /**
+     * @param Link $link
+     * @return View
+     */
+    public function edit(Link $link): View
+    {
+        return view('edit', compact('link'));
+    }
+
+    /**
+     * @param Request $request
+     * @param Link $link
+     * @return RedirectResponse
+     */
+    public function update(Request $request, Link $link): RedirectResponse
+    {
+        $request->validate([
+            'source_url' => 'required|url',
+            'max_clicks' => 'required|integer|min:0',
+            'expires_at' => 'nullable|date|after:now|before:tomorrow',
+        ]);
+
+        $link->update([
+            'original_url' => $request->input('original_url'),
+            'max_clicks' => $request->input('max_clicks'),
+            'expires_at' => $request->input('expires_at'),
+        ]);
+
+        return redirect()->route('link.index')->with('success', 'Link updated successfully');
+    }
+
+    /**
+     * @param Link $link
+     * @return RedirectResponse
+     */
+    public function delete(Link $link): RedirectResponse
+    {
+        $link->delete();
+
+        return redirect()->route('link.index')->with('success', 'Link deleted successfully');
     }
 
     /**
