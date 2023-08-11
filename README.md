@@ -3,8 +3,8 @@
 1. Clone repository:
 
    ```bash
-   git clone https://github.com/your_username/shortlink-service.git
-   cd shortlink-service
+   git clone https://github.com/mykola-ahiienko/link-service.git
+   cd link-service
    cp .env.example .env
  2. Start containers
  ```docker-compose up -d --build```
