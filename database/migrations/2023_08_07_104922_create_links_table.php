@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedInteger('clicks')->default(Settings::DEFAULT_CLICKS->value);
             $table->unsignedInteger('max_clicks')->default(Settings::DEFAULT_CLICKS->value);
             $table->timestamp('expires_at')->nullable();
+            $table->timestamps();
         });
     }
 
